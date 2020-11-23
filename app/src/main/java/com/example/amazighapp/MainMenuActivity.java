@@ -11,6 +11,8 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
+        try { Thread.sleep(3000); } catch (Exception e) { } // RIP formatting
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
