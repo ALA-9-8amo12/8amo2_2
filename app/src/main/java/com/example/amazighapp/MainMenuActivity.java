@@ -1,5 +1,6 @@
 package com.example.amazighapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +30,8 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.btnPractice:
-                // Todo: Add functionality
+                Intent intent = new Intent(this, CategoryActivity.class);
+                startActivity(intent);
 
                 break;
             case R.id.btnPlay:
