@@ -2,6 +2,7 @@ package com.example.amazighapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -12,7 +13,11 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
-        try { Thread.sleep(3000); } catch (Exception e) { } // RIP formatting
+        try {
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            Log.d("SplashScreen", "onCreate: " + e);
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
