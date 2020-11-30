@@ -1,6 +1,8 @@
 package com.example.amazighapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -11,7 +13,11 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
-        try { Thread.sleep(3000); } catch (Exception e) { } // RIP formatting
+        try {
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            Log.d("SplashScreen", "onCreate: " + e);
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
@@ -29,7 +35,8 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.btnPractice:
-                // Todo: Add functionality
+                Intent intent = new Intent(this, CategoryActivity.class);
+                startActivity(intent);
 
                 break;
             case R.id.btnPlay:
