@@ -1,5 +1,6 @@
 package com.example.amazighapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,9 +46,26 @@ public class CategoryAdapter extends FirebaseRecyclerAdapter<Category, CategoryA
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Integer id = model.getCategory_id();
+                        Context context = v.getContext();
+                        Integer id      = model.getCategory_id();
 
-                        
+                        switch(gameMode) {
+                            case "PRACTICE":
+                                Intent intentPractice = new Intent(context, OefenActivity.class);
+
+                                intentPractice.putExtra("CATEGORY_ID", id.toString());
+                                context.startActivity(intentPractice);
+
+                                break;
+                            case "PLAY":
+                                Intent intentPlay = new Intent(context, SpeelActivity.class);
+
+                                intentPlay.putExtra("CATEGORY_ID", id.toString());
+                                context.startActivity(intentPlay);
+
+                                break;
+                        }
+
                     }
                 });
         Glide.with(holder.itemView.getContext())
