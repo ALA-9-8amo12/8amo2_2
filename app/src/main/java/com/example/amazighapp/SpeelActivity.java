@@ -13,7 +13,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class SpeelActivity extends AppCompatActivity implements View.OnClickListener {
 
-    String CategoryId;
+    Integer CategoryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class SpeelActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spelen);
 
-        CategoryId = getIntent().getStringExtra("CATEGORY_ID");
+        CategoryId = Integer.parseInt(getIntent().getStringExtra("CATEGORY_ID"));
 
         TextView uwu = findViewById(R.id.textView);
         uwu.setText(CategoryId);
