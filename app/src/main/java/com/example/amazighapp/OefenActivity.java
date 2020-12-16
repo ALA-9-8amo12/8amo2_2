@@ -14,15 +14,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OefenActivity extends AppCompatActivity {
 
     DatabaseReference mBase;
     Integer CategoryId;
-    TranslatedWordAdapter adapter;
-    ArrayList WordList;
+    OefenAdapter adapter;
+    List<TranslatedWord> WordList;
     ViewPager2 viewpager;
-    String ama, ned, image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,55 +34,41 @@ public class OefenActivity extends AppCompatActivity {
         CategoryId = Integer.parseInt(getIntent().getStringExtra("CATEGORY_ID"));
         viewpager = findViewById(R.id.viewPager2);
 
+        WordList = new ArrayList<>();
+
+        getData();
+    }
+
+    public void getData(){
         mBase = (DatabaseReference) FirebaseDatabase.getInstance().getReference().child("translated_word");
         mBase.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        ArrayList<TranslatedWord> TranslatedWords = new ArrayList<>();
-                        
-                        for (DataSnapshot TranslatedWordSnapshot: dataSnapshot.getChildren()) {
-                            TranslatedWord translatedWord = TranslatedWordSnapshot.getValue(TranslatedWord.class);
+            new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                            if (!translatedWord.getCategory_id().equals(CategoryId)) {
-                                continue;
-                            }
+                    for (DataSnapshot TranslatedWordSnapshot: dataSnapshot.getChildren()) {
+                        TranslatedWord translatedCheck = TranslatedWordSnapshot.getValue(TranslatedWord.class);
+                        TranslatedWord translatedWord = new TranslatedWord();
 
-                            ama = translatedWord.getWord_ama();
-                            ned = translatedWord.getWord_ned();
-                            image = translatedWord.getImage_url();
-
-                            TranslatedWords.add(translatedWord);
-                            Log.d("WordEntry", TranslatedWordSnapshot.toString());
-                            Log.d("TransWords", String.valueOf(TranslatedWords));
-                            Log.d("WordEntryValue", translatedWord.toString());
+                        if (!translatedCheck.getCategory_id().equals(CategoryId)) {
+                            continue;
                         }
 
-                        WordList = TranslatedWords;
-                        for (Object WordObject: WordList) {
+                        translatedWord.setWord_ama(TranslatedWordSnapshot.child("word_ama").getValue(String.class));
+                        translatedWord.setWord_ned(TranslatedWordSnapshot.child("word_ned").getValue(String.class));
+                        translatedWord.setImage_url(TranslatedWordSnapshot.child("image_url").getValue(String.class));
 
-                        }
-                        Log.d("WordEntryValues", ama + " " + ned + " " + image);
-                        Log.d("WordList", WordList.toString());
-                        adapter = new TranslatedWordAdapter(WordList);
+                        WordList.add(translatedWord);
                     }
 
-                    @Override public void onCancelled(@NonNull DatabaseError error) {
-                        Log.e("OefenActivity", "Firebase Error: " + error.getMessage());
-                    }
-        });
-        viewpager.setAdapter(adapter);
-    }
+                    adapter = new OefenAdapter(WordList);
+                    viewpager.setAdapter(adapter);
+                }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        adapter.startListening();
-    }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        adapter.stopListening();
+                @Override public void onCancelled(@NonNull DatabaseError error) {
+                    Log.e("OefenActivity", "Firebase Error: " + error.getMessage());
+                }
+            });
     }
 }
