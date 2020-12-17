@@ -19,8 +19,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="316dp"
-        android:text="TextView" />
+        android:layout_marginTop="378dp"
+        android:text="TextView"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/wordAmg"
@@ -28,8 +29,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="335dp"
-        android:text="TextView" />
+        android:layout_marginBottom="243dp"
+        android:text="TextView"
+        android:textSize="24sp" />
 
     <Button
         android:id="@+id/btnSound"
@@ -37,6 +39,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="239dp"
-        android:text="Button" />
+        android:layout_marginBottom="95dp"
+        android:text="Uitspraak Amazigh" />
 </RelativeLayout>

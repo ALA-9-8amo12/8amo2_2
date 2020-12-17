@@ -1,5 +1,8 @@
 package com.example.amazighapp;
 
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +20,11 @@ import java.util.List;
 
 public class OefenAdapter extends RecyclerView.Adapter<OefenAdapter.OefenViewHolder>{
     List<TranslatedWord> wordList;
+    List<WordSounds> wordSoundList;
 
-    public OefenAdapter(List<TranslatedWord> wordList) {
+    public OefenAdapter(List<TranslatedWord> wordList, List<WordSounds> wordSoundList) {
         this.wordList = wordList;
+        this.wordSoundList = wordSoundList;
     }
 
     static class OefenViewHolder extends RecyclerView.ViewHolder {
@@ -47,9 +52,24 @@ public class OefenAdapter extends RecyclerView.Adapter<OefenAdapter.OefenViewHol
 
     @Override
     public void onBindViewHolder(@NonNull OefenAdapter.OefenViewHolder holder, int position) {
-        holder.wordNed.setText(wordList.get(position).getWord_ned());
-        holder.wordAmg.setText(wordList.get(position).getWord_ama());
-//        holder.Date.setText("Date: " + model.getDate());
+        final String sound_url = wordSoundList.get(position).getSound_url();
+        holder.wordNed.setText("Nederlands: " + wordList.get(position).getWord_ned());
+        holder.wordAmg.setText("Amazigh: " + wordList.get(position).getWord_ama());
+        holder.btnSound.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            MediaPlayer player = new MediaPlayer();
+                            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                            player.setDataSource(sound_url);
+                            player.prepare();
+                            player.start();
+                        } catch (Exception e) {
+                            Log.d("Exception sound: ", "Error while playing the sound");
+                        }
+                    }
+                });
 
         Glide.with(holder.itemView.getContext())
                 .load(wordList.get(position).getImage_url())

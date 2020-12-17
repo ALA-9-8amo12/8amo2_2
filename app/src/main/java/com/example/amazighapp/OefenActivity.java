@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class OefenActivity extends AppCompatActivity {
     Integer CategoryId;
     OefenAdapter adapter;
     List<TranslatedWord> WordList;
+    List<WordSounds> WordSoundList;
     ViewPager2 viewpager;
 
     @Override
@@ -35,6 +37,7 @@ public class OefenActivity extends AppCompatActivity {
         viewpager = findViewById(R.id.viewPager2);
 
         WordList = new ArrayList<>();
+        WordSoundList = new ArrayList<>();
 
         getData();
     }
@@ -49,6 +52,7 @@ public class OefenActivity extends AppCompatActivity {
                     for (DataSnapshot TranslatedWordSnapshot: dataSnapshot.getChildren()) {
                         TranslatedWord translatedCheck = TranslatedWordSnapshot.getValue(TranslatedWord.class);
                         TranslatedWord translatedWord = new TranslatedWord();
+                        String key = translatedCheck.getCategory_id().toString();
 
                         if (!translatedCheck.getCategory_id().equals(CategoryId)) {
                             continue;
@@ -59,16 +63,42 @@ public class OefenActivity extends AppCompatActivity {
                         translatedWord.setImage_url(TranslatedWordSnapshot.child("image_url").getValue(String.class));
 
                         WordList.add(translatedWord);
+
+                        mBase = (DatabaseReference) FirebaseDatabase.getInstance().getReference().child("sounds");
+                        mBase.addListenerForSingleValueEvent(
+                                new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                        for (DataSnapshot WordSoundsSnapshot: dataSnapshot.getChildren()) {
+                                            WordSounds translatedCheck = WordSoundsSnapshot.getValue(WordSounds.class);
+                                            WordSounds soundWord = new WordSounds();
+
+                                            if (!translatedCheck.getCategory_id().equals(CategoryId)) {
+                                                continue;
+                                            }
+
+                                            soundWord.setSound_url(WordSoundsSnapshot.child("sound_url").getValue(String.class));
+
+                                            WordSoundList.add(soundWord);
+
+                                            adapter = new OefenAdapter(WordList, WordSoundList);
+                                            viewpager.setAdapter(adapter);
+                                        }
+                                    }
+
+                                    @Override public void onCancelled(@NonNull DatabaseError error) {
+                                        Log.e("OefenActivity", "Firebase Error in getSoundData(): " + error.getMessage());
+                                    }
+                                });
                     }
-
-                    adapter = new OefenAdapter(WordList);
-                    viewpager.setAdapter(adapter);
                 }
-
 
                 @Override public void onCancelled(@NonNull DatabaseError error) {
-                    Log.e("OefenActivity", "Firebase Error: " + error.getMessage());
+                    Log.e("OefenActivity", "Firebase Error in getData(): " + error.getMessage());
                 }
             });
+
     }
+
 }
