@@ -35,12 +35,15 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.btnPractice:
-                Intent intent = new Intent(this, CategoryActivity.class);
-                startActivity(intent);
+                Intent intentPractice = new Intent(this, CategoryActivity.class);
+                intentPractice.putExtra("GAME_MODE", "PRACTICE");
+                startActivity(intentPractice);
 
                 break;
             case R.id.btnPlay:
-                // Todo: Add functionality
+                Intent intentPlay = new Intent(this, CategoryActivity.class);
+                intentPlay.putExtra("GAME_MODE", "PLAY");
+                startActivity(intentPlay);
 
                 break;
             case R.id.btnAbout:

@@ -1,8 +1,16 @@
 package com.example.amazighapp;
 
 public class Category {
-    private Integer category_id;
+    private Integer categoryId;
     private String name, image_url;
+
+    public Integer getCategory_id() {
+        return categoryId;
+    }
+
+    public void setCategory_id(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
 
     public String getName() {
         return name;
