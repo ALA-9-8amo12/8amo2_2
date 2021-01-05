@@ -6,14 +6,94 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ProgressBar
+        android:id="@+id/healthBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="328dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txtHeart"
+        android:layout_width="40dp"
+        android:layout_height="43dp"
+        android:text="❤"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/healthBar"
+        app:layout_constraintEnd_toStartOf="@+id/healthBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/healthBar" />
+
+    <TextView
+        android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="69sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="32dp"
+        android:text="Vertaal dit woord"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtWord"
+        android:layout_width="279dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="8dp"
+        android:text="txtWord"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+
+    <Button
+        android:id="@+id/btnAnswer1"
+        android:layout_width="176dp"
+        android:layout_height="166dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="80dp"
+        android:backgroundTint="#4FD52B"
+        android:text="btnAnswer1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtWord" />
+
+    <Button
+        android:id="@+id/btnAnswer2"
+        android:layout_width="176dp"
+        android:layout_height="166dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="80dp"
+        android:backgroundTint="#DC1E1E"
+        android:text="btnAnswer2"
+        app:layout_constraintStart_toEndOf="@+id/btnAnswer1"
+        app:layout_constraintTop_toBottomOf="@+id/txtWord" />
+
+    <Button
+        android:id="@+id/btnAnswer3"
+        android:layout_width="176dp"
+        android:layout_height="166dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#3F5DED"
+        android:text="btnAnswer3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnAnswer1" />
+
+    <Button
+        android:id="@+id/btnAnswer4"
+        android:layout_width="176dp"
+        android:layout_height="166dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#E810C4"
+        android:text="btnAnswer4"
+        app:layout_constraintStart_toEndOf="@+id/btnAnswer3"
+        app:layout_constraintTop_toBottomOf="@+id/btnAnswer2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

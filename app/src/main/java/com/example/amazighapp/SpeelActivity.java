@@ -3,6 +3,7 @@ package com.example.amazighapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,8 +25,8 @@ public class SpeelActivity extends AppCompatActivity implements View.OnClickList
 
         CategoryId = Integer.parseInt(getIntent().getStringExtra("CATEGORY_ID"));
 
-        TextView uwu = findViewById(R.id.textView);
-        uwu.setText(CategoryId);
+        ProgressBar healthBar = findViewById(R.id.healthBar);
+        //healthBar.setProgress(75, true);
     }
 
     @Override
