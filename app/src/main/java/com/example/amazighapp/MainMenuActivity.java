@@ -54,9 +54,9 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.btnScore:
                 Intent intentScore = new Intent(this, ScoreActivity.class);
-                intentScore.putExtra("SCORE_TOTAL", "10");
-                intentScore.putExtra("LESSON_ID", "4");
-                intentScore.putExtra("LESSON_NAME", "Dieren 02");
+                intentScore.putExtra("SCORE_TOTAL", "5");
+                intentScore.putExtra("LESSON_ID", "0");
+                intentScore.putExtra("LESSON_NAME", "Dieren 01");
                 startActivity(intentScore);
                 Log.d("onClick: ", "btnScore");
                 break;

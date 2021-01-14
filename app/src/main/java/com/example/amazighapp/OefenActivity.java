@@ -52,7 +52,6 @@ public class OefenActivity extends AppCompatActivity {
                     for (DataSnapshot TranslatedWordSnapshot: dataSnapshot.getChildren()) {
                         TranslatedWord translatedCheck = TranslatedWordSnapshot.getValue(TranslatedWord.class);
                         TranslatedWord translatedWord = new TranslatedWord();
-                        String key = translatedCheck.getCategory_id().toString();
 
                         if (!translatedCheck.getCategory_id().equals(CategoryId)) {
                             continue;
