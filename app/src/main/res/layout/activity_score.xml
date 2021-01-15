@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/app_background"
     tools:context=".ScoreActivity">
 
     <TextView
@@ -36,7 +37,7 @@
         android:id="@+id/txtHighScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="highscore"
+        android:text="Highscore"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
