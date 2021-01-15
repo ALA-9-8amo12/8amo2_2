@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,19 +12,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Scanner;
 
 public class ScoreActivity extends AppCompatActivity implements View.OnClickListener{
 
-    String lessonName;
+    String lessonName, filePath;
     Integer lessonID, scoreTotal;
     TextView txtLessonName, txtHighScore, txtNewScore;
     Button btnOpnieuw, btnSluit;
+    Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,57 +48,54 @@ public class ScoreActivity extends AppCompatActivity implements View.OnClickList
         btnOpnieuw.setOnClickListener(this);
         btnSluit.setOnClickListener(this);
 
-        String filePath = this.getFilesDir().getPath() + "/" + lessonName + ".json";
-        Gson gson = new GsonBuilder()
+        filePath = this.getFilesDir().getPath() + "/" + lessonName + ".json";
+        gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();
 
         try {
-            File scoresJSON = new File(filePath);
-            if (scoresJSON.createNewFile()) {
-                System.out.println("File created: " + scoresJSON.getName());
-            } else {
-                System.out.println("File already exists.");
-
-                // add check for score/highscore whether its higher or lower than the registered score
-
-                try {
-                    HighScore highScore = new HighScore(scoreTotal, lessonID);
-                    FileWriter jsonWriter = new FileWriter(filePath);
-
-                    System.out.println("onJSONWriter" + gson.toJson(highScore));
-                    System.out.println("onFileWrite: " + filePath);
-
-                    jsonWriter.write(gson.toJson(highScore));
-                    jsonWriter.close();
-                } catch (IOException e) {
-                    System.out.println("An error occurred.");
-                    e.printStackTrace();
-                }
-
-                try {
-                    Reader reader = new FileReader(filePath);
-                    HighScore score = gson.fromJson(reader, HighScore.class);
-
-                    int lesson_id = score.getLesson_id();
-                    int score_total = score.getScore_total();
-
-                    System.out.println(lesson_id);
-                    System.out.println(score_total);
-
-                    if (scoreTotal > score.getLesson_id()){
-                        txtNewScore.setText("Nieuwe highscore!");
-                    } else {
-                        txtNewScore.setText("Huidige highscore: " + scoreTotal);
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            createFile();
+            fileReader();
+            fileWriter();
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
+        }
+    }
+
+    public void createFile() throws IOException {
+        File scoresJSON = new File(filePath);
+        
+        if (scoresJSON.createNewFile()) {
+            HighScore highScore = new HighScore(scoreTotal, lessonID);
+            FileWriter jsonWriter = new FileWriter(filePath);
+
+            jsonWriter.write(gson.toJson(highScore));
+            jsonWriter.close();
+        }
+    }
+
+    public void fileWriter() throws IOException {
+        Reader reader = new FileReader(filePath);
+        HighScore score = gson.fromJson(reader, HighScore.class);
+
+        if (scoreTotal > score.getScore_total()) {
+            HighScore highScore = new HighScore(scoreTotal, lessonID);
+            FileWriter jsonWriter = new FileWriter(filePath);
+
+            jsonWriter.write(gson.toJson(highScore));
+            jsonWriter.close();
+        }
+    }
+
+    public void fileReader() throws IOException {
+        Reader reader = new FileReader(filePath);
+        HighScore score = gson.fromJson(reader, HighScore.class);
+
+        if (scoreTotal > score.getScore_total()){
+            txtNewScore.setText("Nieuwe highscore!");
+        } else {
+            txtNewScore.setText("Huidige highscore: " + score.getScore_total());
         }
     }
 
@@ -119,6 +114,7 @@ public class ScoreActivity extends AppCompatActivity implements View.OnClickList
                 intentMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intentMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intentMain.putExtra("EXIT", true);
+
                 startActivity(intentMain);
                 finish();
 
