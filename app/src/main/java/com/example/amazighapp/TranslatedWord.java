@@ -10,9 +10,7 @@ public class TranslatedWord {
     public Integer getTw_id() { return translatedWordId; }
     public void setTw_id(Integer translatedWordId) { this.translatedWordId = translatedWordId; }
 
-    public Integer getCategory_id() {
-        return categoryId;
-    }
+    public Integer getCategory_id() {return categoryId; }
     public void setCategory_id(Integer categoryId) {
         this.categoryId = categoryId;
     }
