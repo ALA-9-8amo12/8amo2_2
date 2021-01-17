@@ -47,7 +47,8 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
                 break;
             case R.id.btnAbout:
-                // Todo: Add functionality
+                Intent intentAbout = new Intent(this, AboutActivity.class);
+                startActivity(intentAbout);
 
                 break;
         }
