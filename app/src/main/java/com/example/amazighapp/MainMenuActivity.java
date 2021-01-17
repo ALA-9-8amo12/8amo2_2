@@ -25,14 +25,10 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         Button btnPractice = findViewById(R.id.btnOefenen);
         Button btnPlay     = findViewById(R.id.btnSpelen);
         Button btnAbout    = findViewById(R.id.btnAbout);
-        // Zet dit gedeelte in de SpelenActivity
-        Button btnScore    = findViewById(R.id.btnScore);
 
         btnPractice.setOnClickListener(this);
         btnPlay.setOnClickListener(this);
         btnAbout.setOnClickListener(this);
-        // Zet dit gedeelte in de SpelenActivity
-        btnScore.setOnClickListener(this);
     }
 
     @Override
@@ -52,15 +48,6 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.btnAbout:
                 // Todo: Add functionality
-
-                break;
-            case R.id.btnScore:
-                // Zet dit gedeelte in de SpelenActivity
-                Intent intentScore = new Intent(this, ScoreActivity.class);
-                intentScore.putExtra("SCORE_TOTAL", "12");
-                intentScore.putExtra("LESSON_ID", "7");
-                intentScore.putExtra("LESSON_NAME", "Kleding");
-                startActivity(intentScore);
 
                 break;
         }

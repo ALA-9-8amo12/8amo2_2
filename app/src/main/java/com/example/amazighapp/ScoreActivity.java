@@ -103,8 +103,9 @@ public class ScoreActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnOpnieuw:
-                Intent intentPlay = new Intent(this, OefenActivity.class);
+                Intent intentPlay = new Intent(this, SpeelActivity.class);
                 intentPlay.putExtra("CATEGORY_ID", lessonID.toString());
+                intentPlay.putExtra("CATEGORY_NAME", lessonName);
                 startActivity(intentPlay);
 
                 break;
