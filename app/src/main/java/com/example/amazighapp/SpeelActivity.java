@@ -1,11 +1,14 @@
 package com.example.amazighapp;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,8 +27,15 @@ import java.util.Random;
 public class SpeelActivity extends AppCompatActivity implements View.OnClickListener {
 
     Integer              CategoryId;
+    String               CategoryName;
     DatabaseReference    mBase;
     ProgressBar          healthBar;
+    Button               btnAnswer1;
+    Button               btnAnswer2;
+    Button               btnAnswer3;
+    Button               btnAnswer4;
+    Integer              QuizProgress;
+    Integer              QuizScore;
     List<QuizItem>       QuizList;
     List<TranslatedWord> WordList;
     List<WordSounds>     WordSoundList;
@@ -40,9 +50,20 @@ public class SpeelActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_spelen);
 
         CategoryId    = Integer.parseInt(getIntent().getStringExtra("CATEGORY_ID"));
+        CategoryName  = getIntent().getStringExtra("CATEGORY_NAME");
         QuizList      = new ArrayList<>();
         WordList      = new ArrayList<>();
         WordSoundList = new ArrayList<>();
+
+        btnAnswer1  = findViewById(R.id.btnAnswer1);
+        btnAnswer2  = findViewById(R.id.btnAnswer2);
+        btnAnswer3  = findViewById(R.id.btnAnswer3);
+        btnAnswer4  = findViewById(R.id.btnAnswer4);
+
+        btnAnswer1.setOnClickListener(this);
+        btnAnswer2.setOnClickListener(this);
+        btnAnswer3.setOnClickListener(this);
+        btnAnswer4.setOnClickListener(this);
 
         dialog = ProgressDialog.show(this, "", "Les aan het laden...", true);
 
@@ -78,9 +99,65 @@ public class SpeelActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        getNextQuestion();
         switch(v.getId()) {
             // do stuff here
         }
+    }
+
+    public void getNextQuestion() {
+        if (QuizProgress == QuizList.size()) {
+//            Intent intentScore = new Intent(this, ScoreActivity.class);
+//            intentScore.putExtra("SCORE_TOTAL", QuizScore);
+//            intentScore.putExtra("LESSON_ID", CategoryId);
+//            intentScore.putExtra("LESSON_NAME", CategoryName);
+//
+//            startActivity(intentScore);
+
+            btnAnswer1.setText("");
+            btnAnswer2.setText("");
+            btnAnswer3.setText("");
+            btnAnswer4.setText("");
+            return;
+        }
+
+        QuizItem question    = QuizList.get(QuizProgress);
+        TextView txtWord     = findViewById(R.id.txtWord);
+
+        txtWord.setText(question.getWord_ama());
+
+        switch(getRandomNumberInRange(0, 4)) {
+            case 0:
+                btnAnswer1.setText(question.getWord_ned());
+                btnAnswer2.setText(question.getWrongWords().get(0));
+                btnAnswer3.setText(question.getWrongWords().get(1));
+                btnAnswer4.setText(question.getWrongWords().get(2));
+
+                break;
+            case 1:
+                btnAnswer1.setText(question.getWrongWords().get(0));
+                btnAnswer2.setText(question.getWord_ned());
+                btnAnswer3.setText(question.getWrongWords().get(1));
+                btnAnswer4.setText(question.getWrongWords().get(2));
+
+                break;
+            case 2:
+                btnAnswer1.setText(question.getWrongWords().get(0));
+                btnAnswer2.setText(question.getWrongWords().get(1));
+                btnAnswer3.setText(question.getWord_ned());
+                btnAnswer4.setText(question.getWrongWords().get(2));
+
+                break;
+            case 3:
+                btnAnswer1.setText(question.getWrongWords().get(0));
+                btnAnswer2.setText(question.getWrongWords().get(1));
+                btnAnswer3.setText(question.getWrongWords().get(2));
+                btnAnswer4.setText(question.getWord_ned());
+
+                break;
+        }
+
+        QuizProgress += 1;
     }
 
     public void generateQuiz() {
@@ -122,6 +199,9 @@ public class SpeelActivity extends AppCompatActivity implements View.OnClickList
             quizItem.setWrongWords(wrongWords);
             QuizList.add(quizItem);
         }
+
+        QuizProgress = 0;
+        getNextQuestion();
 
         dialog.dismiss();
     }

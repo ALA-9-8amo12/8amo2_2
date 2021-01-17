@@ -47,6 +47,7 @@ public class CategoryAdapter extends FirebaseRecyclerAdapter<Category, CategoryA
                     @Override
                     public void onClick(View v) {
                         Context context = v.getContext();
+                        String  name    = model.getName();
                         Integer id      = model.getCategory_id();
 
                         switch(gameMode) {
@@ -61,6 +62,7 @@ public class CategoryAdapter extends FirebaseRecyclerAdapter<Category, CategoryA
                                 Intent intentPlay = new Intent(context, SpeelActivity.class);
 
                                 intentPlay.putExtra("CATEGORY_ID", id.toString());
+                                intentPlay.putExtra("CATEGORY_NAME", name);
                                 context.startActivity(intentPlay);
 
                                 break;
