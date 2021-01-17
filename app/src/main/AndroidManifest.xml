@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,8 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Launcher">
-        <activity android:name=".OefenActivity"></activity>
-        <activity android:name=".SpeelActivity"></activity>
+        <activity android:name=".ScoreActivity"></activity>
+        <activity android:name=".OefenActivity" />
+        <activity android:name=".SpeelActivity" />
         <activity android:name=".CategoryActivity" />
         <activity android:name=".MainMenuActivity">
             <intent-filter>
