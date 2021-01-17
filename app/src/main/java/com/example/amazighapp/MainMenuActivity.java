@@ -22,25 +22,29 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        Button btnPractice = findViewById(R.id.btnPractice);
-        Button btnPlay     = findViewById(R.id.btnPlay);
+        Button btnPractice = findViewById(R.id.btnOefenen);
+        Button btnPlay     = findViewById(R.id.btnSpelen);
         Button btnAbout    = findViewById(R.id.btnAbout);
+        // Zet dit gedeelte in de SpelenActivity
+        Button btnScore    = findViewById(R.id.btnScore);
 
         btnPractice.setOnClickListener(this);
         btnPlay.setOnClickListener(this);
         btnAbout.setOnClickListener(this);
+        // Zet dit gedeelte in de SpelenActivity
+        btnScore.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
-            case R.id.btnPractice:
+            case R.id.btnOefenen:
                 Intent intentPractice = new Intent(this, CategoryActivity.class);
                 intentPractice.putExtra("GAME_MODE", "PRACTICE");
                 startActivity(intentPractice);
 
                 break;
-            case R.id.btnPlay:
+            case R.id.btnSpelen:
                 Intent intentPlay = new Intent(this, CategoryActivity.class);
                 intentPlay.putExtra("GAME_MODE", "PLAY");
                 startActivity(intentPlay);
@@ -48,6 +52,15 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.btnAbout:
                 // Todo: Add functionality
+
+                break;
+            case R.id.btnScore:
+                // Zet dit gedeelte in de SpelenActivity
+                Intent intentScore = new Intent(this, ScoreActivity.class);
+                intentScore.putExtra("SCORE_TOTAL", "12");
+                intentScore.putExtra("LESSON_ID", "7");
+                intentScore.putExtra("LESSON_NAME", "Kleding");
+                startActivity(intentScore);
 
                 break;
         }
