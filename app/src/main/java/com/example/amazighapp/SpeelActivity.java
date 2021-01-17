@@ -2,6 +2,8 @@ package com.example.amazighapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -99,25 +101,58 @@ public class SpeelActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        getNextQuestion();
         switch(v.getId()) {
-            // do stuff here
+            case R.id.btnAnswer1:
+                checkAnswer(btnAnswer1.getText().toString());
+
+                break;
+            case R.id.btnAnswer2:
+                checkAnswer(btnAnswer2.getText().toString());
+
+                break;
+            case R.id.btnAnswer3:
+                checkAnswer(btnAnswer3.getText().toString());
+
+                break;
+            case R.id.btnAnswer4:
+                checkAnswer(btnAnswer4.getText().toString());
+
+                break;
         }
+    }
+
+    public void checkAnswer(String givenAnswer) {
+        QuizItem currentQuestion = QuizList.get(QuizProgress);
+
+        if (!currentQuestion.getWrongWords().contains(givenAnswer)) {
+            QuizScore += 10;
+        } else {
+            healthBar.setProgress(healthBar.getProgress() - 33, true);
+
+            if (healthBar.getProgress() == 1) {
+                finishQuiz();
+
+                return;
+            }
+        }
+
+        QuizProgress += 1;
+        getNextQuestion();
+    }
+
+    public void finishQuiz() {
+        Intent intentScore = new Intent(this, ScoreActivity.class);
+        intentScore.putExtra("SCORE_TOTAL", QuizScore.toString());
+        intentScore.putExtra("LESSON_ID",   CategoryId.toString());
+        intentScore.putExtra("LESSON_NAME", CategoryName);
+
+        startActivity(intentScore);
     }
 
     public void getNextQuestion() {
         if (QuizProgress == QuizList.size()) {
-//            Intent intentScore = new Intent(this, ScoreActivity.class);
-//            intentScore.putExtra("SCORE_TOTAL", QuizScore);
-//            intentScore.putExtra("LESSON_ID", CategoryId);
-//            intentScore.putExtra("LESSON_NAME", CategoryName);
-//
-//            startActivity(intentScore);
+            finishQuiz();
 
-            btnAnswer1.setText("");
-            btnAnswer2.setText("");
-            btnAnswer3.setText("");
-            btnAnswer4.setText("");
             return;
         }
 
@@ -126,7 +161,29 @@ public class SpeelActivity extends AppCompatActivity implements View.OnClickList
 
         txtWord.setText(question.getWord_ama());
 
-        switch(getRandomNumberInRange(0, 4)) {
+        try {
+            MediaPlayer player = new MediaPlayer();
+            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            player.setDataSource(question.getSound_url());
+
+            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                public void onPrepared(MediaPlayer mp) {
+                    mp.start();
+                };
+            });
+
+            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                public void onCompletion(MediaPlayer mp) {
+                    mp.release();
+                };
+            });
+
+            player.prepareAsync();
+        } catch (Exception e) {
+            Log.d("SpeelActivity", "Error while playing the sound");
+        }
+
+        switch(getRandomNumberInRange(0, 3)) {
             case 0:
                 btnAnswer1.setText(question.getWord_ned());
                 btnAnswer2.setText(question.getWrongWords().get(0));
@@ -156,8 +213,6 @@ public class SpeelActivity extends AppCompatActivity implements View.OnClickList
 
                 break;
         }
-
-        QuizProgress += 1;
     }
 
     public void generateQuiz() {
@@ -200,6 +255,7 @@ public class SpeelActivity extends AppCompatActivity implements View.OnClickList
             QuizList.add(quizItem);
         }
 
+        QuizScore    = 0;
         QuizProgress = 0;
         getNextQuestion();
 
@@ -265,7 +321,7 @@ public class SpeelActivity extends AppCompatActivity implements View.OnClickList
                                         }
 
                                         @Override public void onCancelled(@NonNull DatabaseError error) {
-                                            Log.e("OefenActivity", "Firebase Error in getSoundData(): " + error.getMessage());
+                                            Log.e("SpeelActivity", "Firebase Error in getSoundData(): " + error.getMessage());
                                         }
                                     });
                         }
